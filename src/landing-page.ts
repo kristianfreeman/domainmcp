@@ -62,7 +62,7 @@ export const landingPageHTML = `<!DOCTYPE html>
                     
                     <div class="bg-gray-800 rounded-lg p-6 border border-gray-700">
                         <p class="text-sm text-gray-400 mb-4">Add the MCP server with a single command:</p>
-                        <pre class="code-block" data-lang="bash"><code>claude mcp add domainmcp https://domainmcp.dev -t sse</code></pre>
+                        <pre class="code-block" data-lang="bash"><code>claude mcp add domainmcp https://domainmcp.dev/sse -t sse</code></pre>
                     </div>
                 </div>
 
