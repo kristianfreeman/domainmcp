@@ -87,7 +87,7 @@ export const landingPageHTML = `<!DOCTYPE html>
             </section>
 
             <footer class="text-center text-gray-500 pt-12 mt-12 border-t border-gray-800">
-                <a href="https://github.com/yourusername/domainmcp" class="text-blue-400 hover:underline">GitHub</a>
+                <a href="https://github.com/kristianfreeman/domainmcp" class="text-blue-400 hover:underline">GitHub</a>
             </footer>
         </div>
     </div>
