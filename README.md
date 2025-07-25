@@ -1,29 +1,70 @@
-# Building a Remote MCP Server on Cloudflare (Without Auth)
+# Domain Availability Checker MCP Server
 
-This example allows you to deploy a remote MCP server that doesn't require authentication on Cloudflare Workers. 
+This MCP (Model Context Protocol) server provides tools for checking domain availability using DNS over HTTPS. It runs on Cloudflare Workers at [domainmcp.dev](https://domainmcp.dev). 
 
-## Get started: 
+## Get Started
 
-[![Deploy to Workers](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/cloudflare/ai/tree/main/demos/remote-mcp-authless)
+### Quick Deploy
 
-This will deploy your MCP server to a URL like: `remote-mcp-server-authless.<your-account>.workers.dev/sse`
-
-Alternatively, you can use the command line below to get the remote MCP Server created on your local machine:
+1. Clone this repository:
 ```bash
-npm create cloudflare@latest -- my-mcp-server --template=cloudflare/ai/demos/remote-mcp-authless
+git clone https://github.com/yourusername/domainmcp.git
+cd domainmcp
 ```
 
-## Customizing your MCP Server
+2. Install dependencies:
+```bash
+npm install
+```
 
-To add your own [tools](https://developers.cloudflare.com/agents/model-context-protocol/tools/) to the MCP server, define each tool inside the `init()` method of `src/index.ts` using `this.server.tool(...)`. 
+3. Deploy to Cloudflare Workers:
+```bash
+npm run deploy
+```
+
+The MCP server will be available at:
+- Production: `https://domainmcp.dev/sse`
+- Development: `http://localhost:8787/sse`
+
+## Available Tools
+
+This MCP server provides two tools for checking domain availability:
+
+### 1. `check_domain`
+Checks the availability of a single domain by querying DNS over HTTPS.
+
+**Parameters:**
+- `domain` (string): The domain name to check (e.g., "example.com")
+
+**Returns:**
+- Domain status (REGISTERED or AVAILABLE)
+- DNS records information (if registered)
+- Availability note
+
+### 2. `check_domains_bulk`
+Checks the availability of multiple domains in a single request.
+
+**Parameters:**
+- `domains` (array of strings): Array of domain names to check
+
+**Returns:**
+- Status for each domain (REGISTERED, AVAILABLE, or error)
+
+## How It Works
+
+The server uses Cloudflare's DNS over HTTPS service to check domain availability:
+- **Status 0 (NOERROR)**: Domain exists and is registered
+- **Status 3 (NXDOMAIN)**: Domain does not exist in DNS (potentially available)
+
+**Note:** DNS non-existence doesn't guarantee a domain is available for registration. Always verify with a domain registrar before attempting to register. 
 
 ## Connect to Cloudflare AI Playground
 
-You can connect to your MCP server from the Cloudflare AI Playground, which is a remote MCP client:
+You can connect to your MCP server from the Cloudflare AI Playground:
 
 1. Go to https://playground.ai.cloudflare.com/
-2. Enter your deployed MCP server URL (`remote-mcp-server-authless.<your-account>.workers.dev/sse`)
-3. You can now use your MCP tools directly from the playground!
+2. Enter the MCP server URL: `https://domainmcp.dev/sse`
+3. You can now use the domain checking tools directly from the playground!
 
 ## Connect Claude Desktop to your MCP server
 
@@ -36,15 +77,17 @@ Update with this configuration:
 ```json
 {
   "mcpServers": {
-    "calculator": {
+    "domain-checker": {
       "command": "npx",
       "args": [
         "mcp-remote",
-        "http://localhost:8787/sse"  // or remote-mcp-server-authless.your-account.workers.dev/sse
+        "https://domainmcp.dev/sse"
       ]
     }
   }
 }
 ```
+
+For local development, use `http://localhost:8787/sse` instead.
 
 Restart Claude and you should see the tools become available. 

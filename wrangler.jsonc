@@ -13,7 +13,7 @@
 	"migrations": [
 		{
 			"new_sqlite_classes": [
-				"MyMCP"
+				"DomainCheckerMCP"
 			],
 			"tag": "v1"
 		}
@@ -21,14 +21,20 @@
 	"durable_objects": {
 		"bindings": [
 			{
-				"class_name": "MyMCP",
+				"class_name": "DomainCheckerMCP",
 				"name": "MCP_OBJECT"
 			}
 		]
 	},
 	"observability": {
 		"enabled": true
-	}
+	},
+	"routes": [
+		{
+			"pattern": "domainmcp.dev/*",
+			"zone_name": "domainmcp.dev"
+		}
+	]
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement
